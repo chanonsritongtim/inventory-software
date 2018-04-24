@@ -24,7 +24,12 @@
       "jsx": true
     }
   },
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true,
+    "node": true
+  },
   "rules": {
-    "no-unused-vars":"warn"
+    "no-console": "off"
   }
 }
