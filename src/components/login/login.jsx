@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Button, Grid, GridColumn, Form, FormInput, Segment, Header } from 'semantic-ui-react';
-import db from '../../db';
+// import db from '../../db';
 
 export default class Login extends React.Component {
 
@@ -15,7 +15,6 @@ export default class Login extends React.Component {
   }
 
   handleChange(e, {name, value}) {
-    console.log('inside handleChange')
     this.setState({
       [name]: value
     })
@@ -26,9 +25,9 @@ export default class Login extends React.Component {
     this.setState({
       submittedName: name,
       submiitedPasswod: password
+    }, () => {
+      console.log('setState complete!')
     })
-    db.table('users').add(this.state);
-    console.log('State ja => ' + JSON.stringify(this.state))
   }
 
   render() {
