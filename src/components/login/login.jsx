@@ -1,6 +1,12 @@
 import React from 'react';
 import { Container, Button, Grid, GridColumn, Form, FormInput, Segment, Header } from 'semantic-ui-react';
-// import db from '../../db';
+import db from '../../db/db';
+
+const style = {
+  marginTop: {
+    marginTop: '1em'
+  }
+}
 
 export default class Login extends React.Component {
 
@@ -23,10 +29,17 @@ export default class Login extends React.Component {
   handleSubmit() {
     const {name, password} = this.state;
     this.setState({
-      submittedName: name,
-      submiitedPasswod: password
+      userId: name,
+      pwd: password
     }, () => {
-      console.log('setState complete!')
+      db.table("users").add({
+        userId: this.state.userId,
+        pwd: this.state.pwd
+      })
+
+      db.table("users").where('[userId+pwd]').equals([this.state.userId,this.state.pwd]).first(user => {
+        console.log("Found user => " + JSON.stringify(user));
+      })
     })
   }
 
@@ -35,7 +48,7 @@ export default class Login extends React.Component {
 
     return (
       <div>
-        <Container>
+        <Container style={ style.marginTop }>
           <Grid>
             <GridColumn textAlign="center">
               <Header>Welcome to Inventory React App !</Header>
@@ -43,9 +56,8 @@ export default class Login extends React.Component {
                 <Segment stacked>
                   <FormInput fluid icon="user" iconPosition="left" placeholder="Username" name='name' value={ name } onChange={ this.handleChange } />
                   <FormInput fluid icon="lock" iconPosition="left" placeholder="Password" name='password' value={ password } onChange={ this.handleChange } />
+                  <Button fluid color="blue" onClick={ this.testFunction }>Confirm</Button>
                 </Segment>
-                <Button color="blue" onClick={ this.testFunction }>Confirm</Button>
-                <Button color="red" onClick={ this.testFunction }>Clear</Button>
               </Form>
             </GridColumn>
           </Grid>

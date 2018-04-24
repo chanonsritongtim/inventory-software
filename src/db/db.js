@@ -1,8 +1,8 @@
 import Dexie from 'dexie';
 
-const db = new Dexie('ReactSampleDB');
+const db = new Dexie('InventorySoftwareDB');
 db.version(1).stores({
-    users: '++id',
+    users: '[userId+pwd]',
 });
 
 export default db;
