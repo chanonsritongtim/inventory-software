@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container, Button, Grid, GridColumn, Form, FormInput, Segment, Header } from 'semantic-ui-react';
+import { Redirect } from 'react-router-dom';
 import db from '../../db/db';
 
 const style = {
@@ -32,13 +33,19 @@ export default class Login extends React.Component {
       userId: name,
       pwd: password
     }, () => {
-      db.table("users").add({
-        userId: this.state.userId,
-        pwd: this.state.pwd
-      })
+      // db.table("users").add({
+      //   userId: this.state.userId,
+      //   pwd: this.state.pwd
+      // })
 
-      db.table("users").where('[userId+pwd]').equals([this.state.userId,this.state.pwd]).first(user => {
-        console.log("Found user => " + JSON.stringify(user));
+      db.table("users").where(["userId", "pwd"]).equals([this.state.userId, this.state.pwd]).first(user => {
+        const {from} = {
+          from: {
+            pathname: "/workspace"
+          }
+        };
+        console.log("Redirect");
+        return <Redirect to={from} />
       })
     })
   }
@@ -55,7 +62,8 @@ export default class Login extends React.Component {
               <Form onSubmit={ this.handleSubmit }>
                 <Segment stacked>
                   <FormInput fluid icon="user" iconPosition="left" placeholder="Username" name='name' value={ name } onChange={ this.handleChange } />
-                  <FormInput fluid icon="lock" iconPosition="left" placeholder="Password" name='password' value={ password } onChange={ this.handleChange } />
+                  <FormInput fluid icon="lock" iconPosition="left" placeholder="Password" name='password' value={ password } onChange={ this.handleChange } type="password"
+                  />
                   <Button fluid color="blue" onClick={ this.testFunction }>Confirm</Button>
                 </Segment>
               </Form>
